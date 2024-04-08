@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NAO Robot Live Feed</title>
+    <style>
+        #placeholder {
+            display: none; /* Initially hidden */
+            text-align: center;
+            background-color: black; /* Set background to black */
+            color: white; /* Set text color to white */
+            height: 100vh; /* Make the placeholder take full viewport height */
+            width: 100%; /* Make the placeholder take full width */
+            position: fixed; /* Fixed position to cover the whole screen */
+            top: 0; /* Position at the top */
+            left: 0; /* Position at the left */
+            z-index: 1000; /* Make sure it's on top of other elements */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+        }
+        #videoFeed {
+            width: 100%; /* Make the video feed take full width */
+        }
+    </style>
+</head>
+<body>
+    <h1>NAO Robot Live Stream</h1>
+    <img id="videoFeed" src="" alt="Live Stream" onerror="showPlaceholder()">
+    <div id="placeholder">
+        <p>Waiting for the NAO Robot to go live...</p>
+    </div>
+
+    <script>
+        function showPlaceholder() {
+            document.getElementById('placeholder').style.display = 'flex'; // Show the placeholder with flex display
+            document.getElementById('videoFeed').style.display = 'none'; // Hide the video feed
+        }
+
+        window.onload = function() {
+            var img = document.getElementById('videoFeed');
+            img.onerror = showPlaceholder;
+            img.onload = function() {
+                img.style.display = 'block'; // Show the video feed when loaded
+                document.getElementById('placeholder').style.display = 'none'; // Hide the placeholder
+            };
+
+            // Append a timestamp to the video feed URL to force the browser to reload the image
+            img.src = "http://10.211.55.7:5000/video_feed?" + new Date().getTime();
+        };
+    </script>
+</body>
+</html>
