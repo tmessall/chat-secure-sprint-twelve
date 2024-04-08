@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embeddable Text-to-Speech</title>
+<style>
+    /* CSS to make the input field and button bigger */
+    #tts-input {
+        font-size: 18px; /* Increase font size */
+        padding: 10px; /* Increase padding */
+        width: 300px; /* Increase width */
+    }
+
+    #tts-button {
+        font-size: 18px; /* Increase font size */
+        padding: 12px 24px; /* Increase padding */
+    }
+</style>
+</head>
+<body>
+    <!-- Embeddable Text-to-Speech Interface -->
+    <form id="tts-form">
+        <input type="text" id="tts-input" placeholder="Type what you want to say..." autocomplete="off">
+        <input type="submit" id="tts-button" value="Speak" hidden>
+    </form>
+
+    <!-- Script for handling the Text-to-Speech -->
+    <script>
+    document.getElementById("tts-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        var text = document.getElementById("tts-input").value;
+        if(text) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://10.211.55.7:5000/speak", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log("Text sent to the robot:", text);
+                    document.getElementById("tts-input").value = ''; // Clear the input after sending
+                    // Speak "Response sent" after submitting
+                    speakResponse("Response sent");
+                } else {
+                    console.error("Error from server:", xhr.status, xhr.statusText);
+                }
+            };
+            xhr.onerror = function () {
+                console.error("Request failed");
+            };
+            var data = JSON.stringify({"text": text});
+            xhr.send(data);
+        } else {
+            alert("Please enter some text to speak.");
+        }
+    });
+
+    // Function to speak a given text
+    function speakResponse(text) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        window.speechSynthesis.speak(msg);
+    }
+
+    // Clear input field and focus after speaking
+    document.getElementById("tts-input").addEventListener("input", function(event) {
+        // If Enter key is pressed, focus on input field
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("tts-input").value = '';
+            document.getElementById("tts-input").focus();
+        }
+    });
+    </script>
+</body>
+</html>
