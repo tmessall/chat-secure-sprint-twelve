@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robot Remote Controller</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        overflow: hidden;
+    }
+    .container {
+        margin-top: 50px;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    #forwardBtn {
+        width: calc((100% - 20px) / 2); /* Half of the container width minus margins */
+        height: auto;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Robot Remote Controller</h1>
+    <div class="button-group">
+        <button id="turnLeftBtn">Turn Left</button>
+        <button id="turnRightBtn">Turn Right</button>
+    </div>
+    <div class="button-group">
+        <button id="turnHeadLeftBtn">Turn Head Left</button>
+        <button id="turnHeadRightBtn">Turn Head Right</button>
+    </div>
+    <button id="forwardBtn">Walk Forward</button><br>
+</div>
+<script>
+    document.getElementById("turnLeftBtn").addEventListener("click", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://10.211.55.7:5000/turn_left', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send();
+    });
+
+    document.getElementById("turnRightBtn").addEventListener("click", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://10.211.55.7:5000/turn_right', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send();
+    });
+
+    document.getElementById("turnHeadLeftBtn").addEventListener("click", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://10.211.55.7:5000/look_left', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send();
+    });
+
+   document.getElementById("turnHeadRightBtn").addEventListener("click", function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://10.211.55.7:5000/look_right', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+        }
+    };
+    xhr.send();
+});
+
+
+    document.getElementById("forwardBtn").addEventListener("click", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://10.211.55.7:5000/walk', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send();
+    });
+</script>
+</body>
+</html>
